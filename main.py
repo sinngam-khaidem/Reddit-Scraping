@@ -27,7 +27,7 @@ reddit = praw.Reddit(
 
 category_map = {
     "controversial": 0,
-    "glided": 1,
+    "gilded": 1,
     "hot": 2,
     "new": 3,
     "rising": 4,
@@ -60,7 +60,7 @@ def get_subreddit_submissions(subreddit_name: str, category: int, limit: int|Non
     if category==0:
         results = subreddit.controversial(time_filter='all', limit=limit)
     elif category==1:
-        results = subreddit.glided(limit=limit)
+        results = subreddit.gilded(limit=limit)
     elif category==2:
         results = subreddit.hot(limit=limit)
     elif category==3:
