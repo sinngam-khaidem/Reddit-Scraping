@@ -141,11 +141,14 @@ def extract_submission_infos(results, media_files_path, json_file_path) -> List:
     return count
 
 if __name__ == "__main__":
-    subreddit_name = "PeopleFuckingDying"
-    json_file_path = "json_files/PeopleFuckingDying/top.json"
-    media_files_path = "media_files/PeopleFuckingDying/top"
+    # WARNING!! Do not forget to change these values.
+    SUBREDDIT_NAME = "PeopleFuckingDying"
+    CATEGORY = "top"
+    #-------------------------------------------------------------------------------------------------------------------------------------------
+    json_file_path = f"json_files/{SUBREDDIT_NAME}/{CATEGORY}.json"
+    media_files_path = f"media_files/{SUBREDDIT_NAME}/{CATEGORY}"
     try:
-        results = get_subreddit_submissions(subreddit_name, category_map["top"], limit = None)
+        results = get_subreddit_submissions(SUBREDDIT_NAME, category_map[CATEGORY], limit = None)
         count = extract_submission_infos(results, media_files_path, json_file_path)
     except Exception as e:
         print(f"There is an error: {e}")
