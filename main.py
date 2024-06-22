@@ -103,10 +103,11 @@ def download_and_save_image(url:str,id:str ,media_files_path:str) -> bool:
     return False        
 
 
-def extract_submission_infos(results, media_files_path, json_file_path) -> List:
+def extract_submission_infos(results, media_files_path, json_file_path, start_index=0) -> List:
     count = 0
     # Iterate through the result and extract required informations
-    for submission in results:
+    for i in range(start_index, len(results)):
+        submission = results[i]
         if submission.is_video == False and submission.over_18 == False:
             # Extracting URL of the submission
             url = submission.url
@@ -142,20 +143,21 @@ def extract_submission_infos(results, media_files_path, json_file_path) -> List:
                 append_to_json_file(sub, json_file_path)
 
                 count += 1
-                print(f"\nNumber of submissions collected: {count}")
+                print(f"\n\tNumber of submissions collected, k: {count}\n\tNumber of submissions iterated, i: {i+1}\n\tTotal number of submissions returned, T: {len(results)}\n")
     return count
 
 if __name__ == "__main__":
     # WARNING!! Do not forget to change these values.
     SUBREDDIT_NAME = "trippinthroughtime"
-    CATEGORY = "top"
+    CATEGORY = "new"
+    START_INDEX = 0
     #-------------------------------------------------------------------------------------------------------------------------------------------
     json_file_path = f"json_files/{SUBREDDIT_NAME}/{CATEGORY}.json"
     media_files_path = f"media_files/{SUBREDDIT_NAME}/{CATEGORY}"
     try:
-        results = list(get_subreddit_submissions(SUBREDDIT_NAME, category_map[CATEGORY], limit = None))
+        results = list(get_subreddit_submissions(SUBREDDIT_NAME, category_map[CATEGORY], limit = 10))
         print("Number of submissions returned: ", len(results))
-        count = extract_submission_infos(results, media_files_path, json_file_path)
+        count = extract_submission_infos(results, media_files_path, json_file_path, start_index=START_INDEX)
     except Exception as e:
         print(f"There is an error connecting reddit: {e}")
     
