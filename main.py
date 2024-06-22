@@ -82,21 +82,25 @@ def download_and_save_image(url:str,id:str ,media_files_path:str) -> bool:
     Returns True if the image is successfully saved, else False.
     """
     try:
-        response = requests.get(url=url, timeout=10)
-        content_type = response.headers.get('Content-Type')
-        if content_type and content_type.startswith("image/"):
-            if content_type.split('/')[1] != 'gif':
-                filename = id + '.'+content_type.split('/')[1]
-                with open(f"{media_files_path}/{filename}", "wb") as file:
-                    file.write(response.content)
-                return True
-            else:
-                return False
-        else:
-            return False
+        # Some websites block requests that don't have a proper User-Agent header, suspecting them as automated scrapers.
+        headers = {
+            'User-Agent': USER_AGENT,
+            'Accept': 'application/json'
+        }
+        # Create a session to manage cookies
+        session = requests.Session()
+        response = session.get(url, timeout=5, headers=headers)
+        if response.status_code == 200:
+            content_type = response.headers.get('Content-Type')
+            if content_type and content_type.startswith("image/"):
+                if content_type.split('/')[1] != 'gif':
+                    filename = id + '.'+content_type.split('/')[1]
+                    with open(f"{media_files_path}/{filename}", "wb") as file:
+                        file.write(response.content)
+                    return True
     except Exception as err:
-        print(f"There was an error: {err}")
-        return False        
+        print(f"There was an error downloading image: {err}")
+    return False        
 
 
 def extract_submission_infos(results, media_files_path, json_file_path) -> List:
@@ -106,6 +110,7 @@ def extract_submission_infos(results, media_files_path, json_file_path) -> List:
         if submission.is_video == False and submission.over_18 == False:
             # Extracting URL of the submission
             url = submission.url
+            print(url)
             # Extracting title/caption of the submission
             title = submission.title
             # Extracting ID of the submission. This will help in deduplication.
@@ -142,7 +147,7 @@ def extract_submission_infos(results, media_files_path, json_file_path) -> List:
 
 if __name__ == "__main__":
     # WARNING!! Do not forget to change these values.
-    SUBREDDIT_NAME = "PeopleFuckingDying"
+    SUBREDDIT_NAME = "trippinthroughtime"
     CATEGORY = "top"
     #-------------------------------------------------------------------------------------------------------------------------------------------
     json_file_path = f"json_files/{SUBREDDIT_NAME}/{CATEGORY}.json"
@@ -151,7 +156,7 @@ if __name__ == "__main__":
         results = get_subreddit_submissions(SUBREDDIT_NAME, category_map[CATEGORY], limit = None)
         count = extract_submission_infos(results, media_files_path, json_file_path)
     except Exception as e:
-        print(f"There is an error: {e}")
+        print(f"There is an error connecting reddit: {e}")
     
 
 
