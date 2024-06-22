@@ -153,7 +153,8 @@ if __name__ == "__main__":
     json_file_path = f"json_files/{SUBREDDIT_NAME}/{CATEGORY}.json"
     media_files_path = f"media_files/{SUBREDDIT_NAME}/{CATEGORY}"
     try:
-        results = get_subreddit_submissions(SUBREDDIT_NAME, category_map[CATEGORY], limit = None)
+        results = list(get_subreddit_submissions(SUBREDDIT_NAME, category_map[CATEGORY], limit = None))
+        print("Number of submissions returned: ", len(results))
         count = extract_submission_infos(results, media_files_path, json_file_path)
     except Exception as e:
         print(f"There is an error connecting reddit: {e}")
