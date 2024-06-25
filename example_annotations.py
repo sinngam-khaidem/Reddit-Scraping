@@ -97,11 +97,11 @@ if __name__ == "__main__":
     # You do not need to create excel file path manually.
     # Set LIMIT_SUBMISSION to None in order to use all the items in the JSON file.
     # e.g. LIMIT_SUBMISSION = None
-    SUBREDDIT_NAME = "rareinsults"
-    CATEGORY = "top"
-    LIMIT_SUBMISSION = 20
+    # You can only use this for categories of those subreddits whose json file is created and medias downloaded.
+    SUBREDDIT_NAME = ""
+    CATEGORY = ""
+    LIMIT_SUBMISSION = None
     #-------------------------------------------------------------------------------------
-
     JSON_FILE_PATH = f"json_files/{SUBREDDIT_NAME}/{CATEGORY}.json"
     IMAGE_FILE_PATH = f"media_files/{SUBREDDIT_NAME}/{CATEGORY}"
     EXCEL_FILE_DIR = f"example_annotations/{SUBREDDIT_NAME}"
