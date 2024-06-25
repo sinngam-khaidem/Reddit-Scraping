@@ -1,6 +1,8 @@
 .env
 json_files
 media_files
+example_annotations
 comments_scrape.py
 test.py
 myvenv
+url_test.py
