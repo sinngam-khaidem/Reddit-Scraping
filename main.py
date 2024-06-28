@@ -6,6 +6,8 @@ import pprint
 import requests
 from typing import List
 from dotenv import load_dotenv
+from PIL import Image
+from io import BytesIO
 
 load_dotenv()
 
@@ -94,9 +96,12 @@ def download_and_save_image(url:str,id:str ,media_files_path:str) -> bool:
             content_type = response.headers.get('Content-Type')
             if content_type and content_type.startswith("image/"):
                 if content_type.split('/')[1] != 'gif':
-                    filename = id + '.'+content_type.split('/')[1]
-                    with open(f"{media_files_path}/{filename}", "wb") as file:
-                        file.write(response.content)
+                    filename = id +".png"
+
+                    # Open the image with Pillow
+                    image = Image.open(BytesIO(response.content))
+                    image.thumbnail((500,500), Image.LANCZOS)
+                    image.save(f"{media_files_path}/{filename}", format='PNG')
                     return True
     except Exception as err:
         print(f"There was an error downloading image: {err}")
@@ -149,15 +154,19 @@ def extract_submission_infos(results, media_files_path, json_file_path, category
 if __name__ == "__main__":
     # WARNING!! Do not forget to change these values.
     SUBREDDIT_NAME = "mildlyinfuriating"
-    CATEGORY = "top"
-    START_INDEX = 716
+    CATEGORY = "new"
+    START_INDEX = 0
+    LIMIT = 10
     #-------------------------------------------------------------------------------------------------------------------------------------------
-    json_file_path = f"json_files/{SUBREDDIT_NAME}/{CATEGORY}.json"
+    json_files_dir  = f"json_files/{SUBREDDIT_NAME}"
+    json_files_path = f"{json_files_dir}/{CATEGORY}.json"
     media_files_path = f"media_files/{SUBREDDIT_NAME}/{CATEGORY}"
+    os.makedirs(json_files_dir, exist_ok=True)
+    os.makedirs(media_files_path, exist_ok=True)
     try:
-        results = list(get_subreddit_submissions(SUBREDDIT_NAME, category_map[CATEGORY], limit = None))
+        results = list(get_subreddit_submissions(SUBREDDIT_NAME, category_map[CATEGORY], limit = LIMIT))
         print("Number of submissions returned: ", len(results))
-        count = extract_submission_infos(results, media_files_path, json_file_path, start_index=START_INDEX, category=CATEGORY)
+        count = extract_submission_infos(results, media_files_path, json_files_path, start_index=START_INDEX, category=CATEGORY)
     except Exception as e:
         print(f"There is an error connecting reddit: {e}")
     
