@@ -62,7 +62,7 @@ def merge_and_deduplicate_images(parent_folder, new_folder_name):
     print(f"Merged and deduplicated images are saved in {new_folder_path}")
 
 if __name__ == "__main__":
-    SUBREDDIT_NAME = "trippinthroughtime"
+    SUBREDDIT_NAME = "rareinsults"
 
     categories = ["top", "hot", "new", "controversial", "rising"]
     res = []

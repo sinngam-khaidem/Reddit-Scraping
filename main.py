@@ -153,8 +153,8 @@ def extract_submission_infos(results, media_files_path, json_file_path, category
 
 if __name__ == "__main__":
     # WARNING!! Do not forget to change these values.
-    SUBREDDIT_NAME = "rareinsults"
-    CATEGORY = "controversial"
+    SUBREDDIT_NAME = "RoastMe"
+    CATEGORY = "new"
     START_INDEX = 0
     LIMIT = None
     #-------------------------------------------------------------------------------------------------------------------------------------------
