@@ -7,8 +7,7 @@ from openpyxl.utils import get_column_letter
 from urllib.parse import urlparse
 import PIL
 from PIL import Image as PilImage
-from pathlib import Path
-PIL.Image.MAX_IMAGE_PIXELS = 108000000
+PIL.Image.MAX_IMAGE_PIXELS = None
 
 def create_excel_file(json_file_path, image_file_path, excel_file_path, limit = 10, use_comment=False):
     unique_ids = set()
@@ -34,7 +33,7 @@ def create_excel_file(json_file_path, image_file_path, excel_file_path, limit = 
 
     if limit == None:
         limit = len(data)
-    if limit < len(data):
+    if limit > len(data):
         limit = len(data)
     for i in range(limit):
         try:

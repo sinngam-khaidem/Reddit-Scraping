@@ -153,10 +153,10 @@ def extract_submission_infos(results, media_files_path, json_file_path, category
 
 if __name__ == "__main__":
     # WARNING!! Do not forget to change these values.
-    SUBREDDIT_NAME = "mildlyinfuriating"
-    CATEGORY = "new"
+    SUBREDDIT_NAME = "rareinsults"
+    CATEGORY = "controversial"
     START_INDEX = 0
-    LIMIT = 10
+    LIMIT = None
     #-------------------------------------------------------------------------------------------------------------------------------------------
     json_files_dir  = f"json_files/{SUBREDDIT_NAME}"
     json_files_path = f"{json_files_dir}/{CATEGORY}.json"
@@ -168,7 +168,7 @@ if __name__ == "__main__":
         print("Number of submissions returned: ", len(results))
         count = extract_submission_infos(results, media_files_path, json_files_path, start_index=START_INDEX, category=CATEGORY)
     except Exception as e:
-        print(f"There is an error connecting reddit: {e}")
+        print(f"There is an error connecting reddit: {e}") 
     
 
 

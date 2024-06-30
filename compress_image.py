@@ -5,6 +5,8 @@ from tqdm import tqdm
 Image.MAX_IMAGE_PIXELS = None
 
 def compress_images_in_dir(src_file_dir, dest_file_dir):
+    if not os.path.exists(src_file_dir):
+        return
     if not os.path.exists(dest_file_dir):
         os.makedirs(dest_file_dir)
     
@@ -27,9 +29,10 @@ def compress_images_in_dir(src_file_dir, dest_file_dir):
             print(f"Skipping non-image file: {filepath}")
 
 if __name__ == "__main__":
-    SUBREDDIT = "mildlyinfuriating"
-    CATEGORY = "new"
-
-    src_file_dir = f"media_files/{SUBREDDIT}/{CATEGORY}"
-    dest_file_dir = f"media_files/{SUBREDDIT}/{CATEGORY}"
-    compress_images_in_dir(src_file_dir, dest_file_dir)
+    SUBREDDIT = "trippinthroughtime"
+    category_list = ["controversial", "gilded", "hot", "new", "top", "rising"]
+    for CATEGORY in category_list:
+        src_file_dir = f"media_files/{SUBREDDIT}/{CATEGORY}"
+        dest_file_dir = f"media_files/{SUBREDDIT}/{CATEGORY}"
+        print(f"Compressing for {CATEGORY}.......")
+        compress_images_in_dir(src_file_dir, dest_file_dir)
